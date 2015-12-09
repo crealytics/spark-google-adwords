@@ -43,12 +43,13 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
     // Make sure at least one column is selected
     val cols = if (columns.isEmpty) Array[String](schema.apply(0).name) else columns
     // create the query
-    var query = s"SELECT ${cols.mkString(", ")}\n"
-    query += s"FROM $reportType\n"
-    if (filters.nonEmpty) query += s"WHERE ${combineFilters(filters)}\n"
-    query += s"DURING $duringStmt\n"
-    // Return the finished Query
-    query
+    val conditionStmt = if (filters.nonEmpty) s"WHERE ${combineFilters(filters)}" else ""
+    s"""
+    SELECT ${cols.mkString(", ")}
+    FROM $reportType
+    $conditionStmt
+    DURING $duringStmt
+    """
   }
 
   // Extracts a subset of Columns of the Table Schema

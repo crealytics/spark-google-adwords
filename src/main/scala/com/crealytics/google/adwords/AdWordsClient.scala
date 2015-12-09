@@ -26,17 +26,13 @@ class AdWordsClient(
     .build.generateCredential
 
   // The Adwords API Session
-  private lazy val session = {
-    val res = new AdWordsSession.Builder()
+  private lazy val session =
+    new AdWordsSession.Builder()
       .withDeveloperToken(developerToken)
       .withUserAgent(userAgent)
       .withOAuth2Credential(credential)
+      .withClientCustomerId(clientCustomerId)
       .build
-    // set our customer id
-    res.setClientCustomerId(clientCustomerId)
-    // return the session
-    res
-  }
 
   // Factory for all AdWords Services
   private lazy val services = new AdWordsServices()
