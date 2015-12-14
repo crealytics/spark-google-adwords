@@ -61,7 +61,6 @@ __Spark 1.4+:__
 
 Generate a refresh token (if you don't have one yet):
 ```scala
-// The following lines are for generating a refresh token, skip
 import com.crealytics.google.adwords._
 val clientId = "123456789123-yourclientid.apps.googleusercontent.com"
 val clientSecret = "yourclientsecret-1"

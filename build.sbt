@@ -73,10 +73,6 @@ assemblyShadeRules in assembly := Seq(
   ShadeRule.rename("org.apache.commons.**" -> "shaded.@0").inAll
 )
 
-artifact in (Compile, assembly) := {
-  (artifact in (Compile, assembly)).value.copy(`classifier` = Some("assembly"))
-}
-
 addArtifact(artifact in(Compile, assembly), assembly)
 
 // -- MiMa binary compatibility checks ------------------------------------------------------------
