@@ -20,7 +20,6 @@ sparkComponents := Seq("core", "sql")
 
 libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.5" % "provided",
-  "com.databricks" %% "spark-csv" % "1.3.0",
   "com.google.api-ads" % "ads-lib" % "2.8.0" exclude("commons-beanutils", "commons-beanutils"),
   "com.google.api-ads" % "adwords-axis" % "2.8.0" exclude("commons-beanutils", "commons-beanutils"),
   "commons-beanutils" % "commons-beanutils" % "1.9.2",
