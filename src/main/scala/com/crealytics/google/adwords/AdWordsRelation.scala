@@ -5,6 +5,7 @@ import java.sql.{Date, Timestamp}
 import java.text.NumberFormat
 import java.util.Locale
 
+import com.google.api.client.auth.oauth2.Credential
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
 import org.apache.spark.sql.sources._
@@ -12,19 +13,13 @@ import org.apache.spark.sql.types._
 
 import scala.util.Try
 
-case class AdWordsRelation protected[crealytics](
-                                                  clientId: String,
-                                                  clientSecret: String,
-                                                  developerToken: String,
-                                                  refreshToken: String,
-                                                  clientCustomerId: String,
-                                                  userAgent: String,
-                                                  reportType: String,
-                                                  duringStmt: String
-  )(@transient val sqlContext: SQLContext)
+case class AdWordsRelation(
+  credential: Credential, developerToken: String, clientCustomerId: String,
+  userAgent: String, reportType: String, duringStmt: String)
+  (@transient val sqlContext: SQLContext)
 extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
   private val client =
-    new AdWordsClient(clientId, clientSecret, developerToken, refreshToken, userAgent, clientCustomerId)
+    new AdWordsClient(credential, developerToken, userAgent, clientCustomerId)
 
   val googleSchema = client.getFieldsForReportType(reportType)
   override val schema: StructType = googleSchema.foldLeft(new StructType) {

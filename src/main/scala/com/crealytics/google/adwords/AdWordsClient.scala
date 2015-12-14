@@ -9,21 +9,10 @@ import com.google.api.ads.adwords.lib.client.AdWordsSession
 import com.google.api.ads.adwords.lib.jaxb.v201509.DownloadFormat
 import com.google.api.ads.adwords.lib.utils.v201509.ReportDownloader
 import com.google.api.ads.common.lib.auth.OfflineCredentials
+import com.google.api.client.auth.oauth2.Credential
 
-class AdWordsClient(
-                     clientId: String,
-                     clientSecret: String,
-                     developerToken: String,
-                     refreshToken: String,
-                     userAgent: String,
-                     clientCustomerId: String
-                   ) {
-  // Our OAuth2 Credential
-  private lazy val credential = new OfflineCredentials.Builder()
-    .forApi(OfflineCredentials.Api.ADWORDS)
-    .withClientSecrets(clientId, clientSecret)
-    .withRefreshToken(refreshToken)
-    .build.generateCredential
+class AdWordsClient(credential: Credential,
+                    developerToken: String, userAgent: String, clientCustomerId: String) {
 
   // The Adwords API Session
   private lazy val session =
