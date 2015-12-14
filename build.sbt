@@ -1,6 +1,6 @@
 name := "spark-google-adwords"
 
-version := "0.8.0"
+version := "0.8.2"
 
 organization := "com.crealytics"
 
