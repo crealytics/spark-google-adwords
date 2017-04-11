@@ -4,11 +4,12 @@ version := "0.8.2"
 
 organization := "com.crealytics"
 
-scalaVersion := "2.11.7"
+crossScalaVersions := Seq("2.11.10", "2.10.6")
+
+scalaVersion := crossScalaVersions.value.head
 
 spName := "crealytics/spark-google-adwords"
 
-crossScalaVersions := Seq("2.10.5", "2.11.7")
 
 sparkVersion := "1.5.2"
 
