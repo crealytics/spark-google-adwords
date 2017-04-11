@@ -11,7 +11,7 @@ scalaVersion := crossScalaVersions.value.head
 spName := "crealytics/spark-google-adwords"
 
 
-sparkVersion := "1.5.2"
+sparkVersion := "2.1.0"
 
 val testSparkVersion = settingKey[String]("The version of Spark to test against.")
 
@@ -20,11 +20,11 @@ testSparkVersion := sys.props.get("spark.testVersion").getOrElse(sparkVersion.va
 sparkComponents := Seq("core", "sql")
 
 libraryDependencies ++= Seq(
-  "org.slf4j" % "slf4j-api" % "1.7.5" % "provided",
-  "com.google.api-ads" % "ads-lib" % "2.8.0" exclude("commons-beanutils", "commons-beanutils"),
-  "com.google.api-ads" % "adwords-axis" % "2.8.0" exclude("commons-beanutils", "commons-beanutils"),
-  "commons-beanutils" % "commons-beanutils" % "1.9.2",
-  "com.google.http-client" % "google-http-client-gson" % "1.21.0",
+  "org.slf4j" % "slf4j-api" % "1.7.25" % "provided",
+  "com.google.api-ads" % "ads-lib" % "3.2.0" exclude("commons-beanutils", "commons-beanutils"),
+  "com.google.api-ads" % "adwords-axis" % "3.2.0" exclude("commons-beanutils", "commons-beanutils"),
+  "commons-beanutils" % "commons-beanutils" % "1.9.3",
+  "com.google.http-client" % "google-http-client-gson" % "1.22.0",
   "com.google.inject" % "guice" % "4.0",
   "com.google.inject.extensions" % "guice-assistedinject" % "4.0",
   "com.google.inject.extensions" % "guice-multibindings" % "4.0"

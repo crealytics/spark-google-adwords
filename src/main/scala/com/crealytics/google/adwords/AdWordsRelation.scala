@@ -11,7 +11,7 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.sources._
 import org.apache.spark.sql.types._
 
-import scala.util.Try
+import scala.util.{Try, Success}
 
 case class AdWordsRelation(
   credential: Credential, developerToken: String, clientCustomerId: String,
@@ -130,9 +130,9 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
   }
 
   @annotation.tailrec
-  private final def retry[T](n: Int)(fn: => T): util.Try[T] = {
-    util.Try(fn) match {
-      case x: util.Success[T] => x
+  private final def retry[T](n: Int)(fn: => T): Try[T] = {
+    Try(fn) match {
+      case x: Success[T] => x
       case _ if n > 1 => retry(n - 1)(fn)
       case f => f
     }
