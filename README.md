@@ -1,5 +1,7 @@
 # Spark Google AdWords Library
 
+[![Join the chat at https://gitter.im/spark-google-adwords/Lobby](https://badges.gitter.im/spark-google-adwords/Lobby.svg)](https://gitter.im/spark-google-adwords/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A library for querying Google AdWords data with Apache Spark, for Spark SQL and DataFrames.
 
 [![Build Status](https://travis-ci.org/crealytics/spark-google-adwords.svg?branch=master)](https://travis-ci.org/crealytics/spark-google-adwords)
