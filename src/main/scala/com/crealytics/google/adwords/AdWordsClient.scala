@@ -54,10 +54,6 @@ class AdWordsClient(credential: Credential,
     }).toSeq
   }
 
-
-
-
-
 }
 
 
