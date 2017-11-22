@@ -14,9 +14,13 @@ class AdWordsAuthHelper(clientId: String, clientSecret: String) {
 
   private val CALLBACK_URL = "urn:ietf:wg:oauth:2.0:oob"
   val authorizationFlow: GoogleAuthorizationCodeFlow =
-    new GoogleAuthorizationCodeFlow.Builder(new NetHttpTransport(), new JacksonFactory(),
-      clientId, clientSecret, SCOPES)
-      .setAccessType("offline")
+    new GoogleAuthorizationCodeFlow.Builder(
+      new NetHttpTransport(),
+      new JacksonFactory(),
+      clientId,
+      clientSecret,
+      SCOPES
+    ).setAccessType("offline")
       .build()
   val authorizationUrl: String =
     authorizationFlow.newAuthorizationUrl().setRedirectUri(CALLBACK_URL).build()
@@ -25,7 +29,8 @@ class AdWordsAuthHelper(clientId: String, clientSecret: String) {
     val tokenRequest = authorizationFlow.newTokenRequest(authorizationCode)
     tokenRequest.setRedirectUri(CALLBACK_URL)
     val tokenResponse = tokenRequest.execute()
-    val credential = new GoogleCredential.Builder().setTransport(new NetHttpTransport())
+    val credential = new GoogleCredential.Builder()
+      .setTransport(new NetHttpTransport())
       .setJsonFactory(new JacksonFactory())
       .setClientSecrets(clientId, clientSecret)
       .build()

@@ -4,9 +4,7 @@ import com.google.api.ads.common.lib.auth.OfflineCredentials
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.sources._
 
-
-class DefaultSource
-  extends RelationProvider {
+class DefaultSource extends RelationProvider {
 
   // The default User Agent
   private final val DEFAULT_USER_AGENT = "Spark"
@@ -18,9 +16,7 @@ class DefaultSource
     * Parameters must include clientId, clientSecret, developerToken, refreshToken, reportType, clientCustomerId
     * Optionally you can also specify userAgent and during
     */
-  override def createRelation(
-                               sqlContext: SQLContext,
-                               parameters: Map[String, String]): AdWordsRelation = {
+  override def createRelation(sqlContext: SQLContext, parameters: Map[String, String]): AdWordsRelation = {
 
     // gather parameters
     val clientId = checkParameter(parameters, "clientId")
@@ -30,15 +26,16 @@ class DefaultSource
     val reportType = checkParameter(parameters, "reportType")
     val clientCustomerId = checkParameter(parameters, "clientCustomerId")
 
-
-    val userAgent = parameterOrDefault(parameters, "userAgent", DEFAULT_USER_AGENT)
+    val userAgent =
+      parameterOrDefault(parameters, "userAgent", DEFAULT_USER_AGENT)
     val duringStmt = parameterOrDefault(parameters, "during", DEFAULT_DURING)
     // Our OAuth2 Credential
     val credential = new OfflineCredentials.Builder()
       .forApi(OfflineCredentials.Api.ADWORDS)
       .withClientSecrets(clientId, clientSecret)
       .withRefreshToken(refreshToken)
-      .build.generateCredential
+      .build
+      .generateCredential
     // create relation
     AdWordsRelation(credential, developerToken, clientCustomerId, userAgent, reportType, duringStmt)(sqlContext)
   }

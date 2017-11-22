@@ -11,13 +11,20 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.sources._
 import org.apache.spark.sql.types._
 
-import scala.util.{Try, Success}
+import scala.util.{Success, Try}
 
 case class AdWordsRelation(
-  credential: Credential, developerToken: String, clientCustomerId: String,
-  userAgent: String, reportType: String, duringStmt: String)
-  (@transient val sqlContext: SQLContext)
-extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
+  credential: Credential,
+  developerToken: String,
+  clientCustomerId: String,
+  userAgent: String,
+  reportType: String,
+  duringStmt: String
+)(@transient val sqlContext: SQLContext)
+    extends BaseRelation
+    with TableScan
+    with PrunedScan
+    with PrunedFilteredScan {
   private val client =
     new AdWordsClient(credential, developerToken, userAgent, clientCustomerId)
 
@@ -26,19 +33,24 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
     case (struct, column) =>
       struct.add(column.getFieldName, sparkDataTypeForGoogleDataType(column.getFieldType))
   }
-  val fieldNameXMLNameLookupMap = googleSchema.map(col => (col.getFieldName, col.getXmlAttributeName)).toMap
+  val fieldNameXMLNameLookupMap =
+    googleSchema.map(col => (col.getFieldName, col.getXmlAttributeName)).toMap
 
   // These two just forward to the buildScan() defined below
-  override def buildScan: RDD[Row] = buildScan(schema.map(_.name).toArray, Array())
+  override def buildScan: RDD[Row] =
+    buildScan(schema.map(_.name).toArray, Array())
 
-  override def buildScan(requiredColumns: Array[String]): RDD[Row] = buildScan(requiredColumns, Array())
+  override def buildScan(requiredColumns: Array[String]): RDD[Row] =
+    buildScan(requiredColumns, Array())
 
   // Creates an AWQL Query from the selected Columns and Filters
   def createQuery(columns: Array[String], filters: Array[Filter]): String = {
     // Make sure at least one column is selected
-    val cols = if (columns.isEmpty) Array[String](schema.apply(0).name) else columns
+    val cols =
+      if (columns.isEmpty) Array[String](schema.apply(0).name) else columns
     // create the query
-    val conditionStmt = if (filters.nonEmpty) s"WHERE ${combineFilters(filters)}" else ""
+    val conditionStmt =
+      if (filters.nonEmpty) s"WHERE ${combineFilters(filters)}" else ""
     s"""
     SELECT ${cols.mkString(", ")}
     FROM $reportType
@@ -74,12 +86,15 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
       case LessThan(attribute, value) => s"$attribute < $value"
       case LessThanOrEqual(attribute, value) => s"$attribute <= $value"
       case In(attribute, values) => s"$attribute IN [${values.mkString(",")}]"
-      case Not(In(attribute, values)) => s"$attribute NOT_IN [${values.mkString(",")}]"
+      case Not(In(attribute, values)) =>
+        s"$attribute NOT_IN [${values.mkString(",")}]"
       case And(lhs, rhs) => Seq(lhs, rhs).map(convertFilter).mkString(" AND ")
-      case StringStartsWith(attribute, value) => s"$attribute STARTS_WITH $value"
+      case StringStartsWith(attribute, value) =>
+        s"$attribute STARTS_WITH $value"
       case StringEndsWith(attribute, value) => ???
       case StringContains(attribute, value) => s"$attribute CONTAINS $value"
-      case Not(StringContains(attribute, value)) => s"$attribute DOES_NOT_CONTAIN $value"
+      case Not(StringContains(attribute, value)) =>
+        s"$attribute DOES_NOT_CONTAIN $value"
       case Or(lhs, rhs) => ???
       case IsNull(attribute) => ???
       case IsNotNull(attribute) => ???
@@ -89,25 +104,26 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
   }
 
   // Convert from Google Data Types to Spark Data Types
-  private def sparkDataTypeForGoogleDataType(dataType: String) = dataType match {
-    case "String" => "STRING"
-    case "Money" => "DOUBLE"
-    case "Double" => "DOUBLE"
-    case "Long" => "LONG"
-    case "Date" => "TIMESTAMP"
-    case "Enum" => "STRING"
-    case "DayOfWeek" => "INTEGER"
-    case "Integer" => "INTEGER"
-    case "MonthOfYear" => "INTEGER"
-    case "Byte" => "BYTE"
-    case "Boolean" => "BOOLEAN"
-    case "boolean" => "BOOLEAN"
-    case "Bid" => "DOUBLE"
-    case "long" => "LONG"
-    case "DateTime" => "TIMESTAMP"
-    case "int" => "INTEGER"
-    case _ => "STRING"
-  }
+  private def sparkDataTypeForGoogleDataType(dataType: String) =
+    dataType match {
+      case "String" => "STRING"
+      case "Money" => "DOUBLE"
+      case "Double" => "DOUBLE"
+      case "Long" => "LONG"
+      case "Date" => "TIMESTAMP"
+      case "Enum" => "STRING"
+      case "DayOfWeek" => "INTEGER"
+      case "Integer" => "INTEGER"
+      case "MonthOfYear" => "INTEGER"
+      case "Byte" => "BYTE"
+      case "Boolean" => "BOOLEAN"
+      case "boolean" => "BOOLEAN"
+      case "Bid" => "DOUBLE"
+      case "long" => "LONG"
+      case "DateTime" => "TIMESTAMP"
+      case "int" => "INTEGER"
+      case _ => "STRING"
+    }
 
   // Cast a String to a Spark Data Type
   private def castTo(datum: String, castType: DataType): Any = {
@@ -116,16 +132,29 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
       case _: ShortType => datum.toShort
       case _: IntegerType => datum.toInt
       case _: LongType => datum.toLong
-      case _: FloatType => Try(datum.toFloat)
-        .getOrElse(NumberFormat.getInstance(Locale.getDefault).parse(datum).floatValue())
-      case _: DoubleType => Try(datum.toDouble)
-        .getOrElse(NumberFormat.getInstance(Locale.getDefault).parse(datum).doubleValue())
+      case _: FloatType =>
+        Try(datum.toFloat)
+          .getOrElse(
+            NumberFormat
+              .getInstance(Locale.getDefault)
+              .parse(datum)
+              .floatValue()
+          )
+      case _: DoubleType =>
+        Try(datum.toDouble)
+          .getOrElse(
+            NumberFormat
+              .getInstance(Locale.getDefault)
+              .parse(datum)
+              .doubleValue()
+          )
       case _: BooleanType => datum.toBoolean
       case _: DecimalType => new BigDecimal(datum.replaceAll(",", ""))
       case _: TimestampType => Timestamp.valueOf(datum)
       case _: DateType => Date.valueOf(datum)
       case _: StringType => datum
-      case _ => throw new RuntimeException(s"Unsupported type: ${castType.typeName}")
+      case _ =>
+        throw new RuntimeException(s"Unsupported type: ${castType.typeName}")
     }
   }
 
@@ -143,11 +172,13 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
     val response = retry(3)(client.downloadReport(query)).get
     // Transform the Strings to their data types
     response.map(row => {
-      schema.map(col => {
-        val name = fieldNameXMLNameLookupMap(col.name)
-        val value = row(name)
-        castTo(value, col.dataType)
-      }).seq
+      schema
+        .map(col => {
+          val name = fieldNameXMLNameLookupMap(col.name)
+          val value = row(name)
+          castTo(value, col.dataType)
+        })
+        .seq
     })
   }
 }
