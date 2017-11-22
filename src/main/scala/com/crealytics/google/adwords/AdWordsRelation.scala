@@ -89,7 +89,7 @@ extends BaseRelation with TableScan with PrunedScan with PrunedFilteredScan {
   }
 
   // Convert from Google Data Types to Spark Data Types
-   private def sparkDataTypeForGoogleDataType(dataType: String) = dataType match {
+  private def sparkDataTypeForGoogleDataType(dataType: String) = dataType match {
     case "String" => "STRING"
     case "Money" => "DOUBLE"
     case "Double" => "DOUBLE"
