@@ -14,6 +14,10 @@ addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.1.7")
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.4")
 
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.6")
+
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC13")
 
 addSbtPlugin("com.lucidchart" % "sbt-scalafmt-coursier" % "1.14")

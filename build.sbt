@@ -1,7 +1,5 @@
 name := "spark-google-adwords"
 
-version := "0.9.0"
-
 organization := "com.crealytics"
 
 crossScalaVersions := Seq("2.11.12", "2.10.6")
