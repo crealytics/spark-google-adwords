@@ -4,17 +4,17 @@ import java.util.zip.GZIPInputStream
 import javax.xml.parsers.DocumentBuilderFactory
 
 import com.google.api.ads.adwords.axis.factory.AdWordsServices
-import com.google.api.ads.adwords.axis.v201710.cm.{ReportDefinitionField, ReportDefinitionServiceInterface}
-import com.google.api.ads.adwords.axis.v201710.cm.{
+import com.google.api.ads.adwords.axis.v201806.cm.{ReportDefinitionField, ReportDefinitionServiceInterface}
+import com.google.api.ads.adwords.axis.v201806.cm.{
   ReportDefinitionField,
   ReportDefinitionReportType,
   ReportDefinitionServiceInterface
 }
 import com.google.api.ads.adwords.lib.client.AdWordsSession
-import com.google.api.ads.adwords.lib.jaxb.v201710.{DownloadFormat}
-import com.google.api.ads.adwords.lib.jaxb.v201710.DownloadFormat
-import com.google.api.ads.adwords.lib.utils.v201710.ReportDownloader
-import com.google.api.ads.adwords.lib.utils.v201710.ReportDownloader
+import com.google.api.ads.adwords.lib.jaxb.v201806.{DownloadFormat}
+import com.google.api.ads.adwords.lib.jaxb.v201806.DownloadFormat
+import com.google.api.ads.adwords.lib.utils.v201806.ReportDownloader
+import com.google.api.ads.adwords.lib.utils.v201806.ReportDownloader
 import com.google.api.ads.common.lib.auth.OfflineCredentials
 import com.google.api.client.auth.oauth2.Credential
 
