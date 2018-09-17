@@ -8,22 +8,16 @@ A library for querying Google AdWords data with Apache Spark, for Spark SQL and 
 
 ## Requirements
 
-This library requires Spark 1.4+
+This library is tested with Spark 2.1+. It might work on older versions, but we don't provide any support on that.
 
 ## Linking
 You can link against this library in your program at the following coordinates:
 
-### Scala 2.10
-```
-groupId: com.crealytics
-artifactId: spark-google-adwords_2.10
-version: 0.9.1
-```
 ### Scala 2.11
 ```
 groupId: com.crealytics
 artifactId: spark-google-adwords_2.11
-version: 0.9.1
+version: 0.9.2
 ```
 
 ## Using with Spark shell
@@ -31,12 +25,7 @@ This package can be added to  Spark using the `--packages` command line option. 
 
 ### Spark compiled with Scala 2.11
 ```
-$SPARK_HOME/bin/spark-shell --packages com.crealytics:spark-google-adwords_2.11:0.9.1
-```
-
-### Spark compiled with Scala 2.10
-```
-$SPARK_HOME/bin/spark-shell --packages com.crealytics:spark-google-adwords_2.10:0.9.1
+$SPARK_HOME/bin/spark-shell --packages com.crealytics:spark-google-adwords_2.11:0.9.2
 ```
 
 ## Features
@@ -94,4 +83,4 @@ val df = sqlContext.read
 ```
 
 ## Building From Source
-This library is built with [SBT](http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html). To build a JAR file simply run `sbt assembly` from the project root. The build configuration includes support for both Scala 2.10 and 2.11.
+This library is built with [SBT](http://www.scala-sbt.org/0.13/docs/Command-Line-Reference.html). To build a JAR file simply run `sbt assembly` from the project root. The build configuration includes support for Scala 2.11.
